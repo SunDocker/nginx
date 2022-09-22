@@ -39,7 +39,7 @@
 
 进入`/usr/local/nginx/sbin`目录，`./nginx`运行
 
-如果运行不了，可能是防火墙的问题：
+如果访问不了，可能是防火墙的问题：
 
 - 关闭防火墙：`systemctl stop firewalld.service`
 - 禁止防火墙开机启动：`systemctl disable firewalld.service`
@@ -88,11 +88,48 @@ Nginx启动与关闭相关命令总结：
 
 6. 开机启动：`systemctl enable nginx`
 
+## 2 目录结构
 
+nginx
 
+- conf
+- html
+- sbin：存放nginx主进程的启动文件
+- logs
+- *_temp：存放运行过程中的临时文件
 
+### 2.1 conf
 
+其中`nginx.conf`是主配置文件，会引用其他配置文件
 
+### 2.2 html
+
+网页和其他静态资源：
+
+- index.html：默认页面
+- 50x.html：错误页面
+
+### 2.3 logs
+
+记录日志：
+
+- access.log：访问日志
+
+  > 这个日志文件可能增长很快，所以要注意限制其大小
+
+- error.log：错误日志
+
+- nginx.pid：记录nginx主进程的id号
+
+  > 要运行起来才会生成这个文件
+
+## 3 基本运行原理
+
+<img src="README.assets/image-20220922084651760.png" alt="image-20220922084651760" style="zoom:80%;" />
+
+Master进程是主进程。Master不负责处理业务，Worker响应用户请求。
+
+Worker解析用户请求，会根据nginx.conf去寻找资源（比如去html文件夹中寻找资源）
 
 
 
